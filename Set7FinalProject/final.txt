@@ -1,0 +1,99 @@
+CSCI 200: Final Project: Bowling Calculator
+Author: Christian Brennan
+
+
+***PROBLEM DESCRIPTION:
+
+I've developed a nifty program that accommodates up to 4 players in a complete 
+game of bowling. Users just need to input the number of pins they knocked down per
+throw, and the program handles all the calculations. The graphical user interface
+(GUI) via SFML displays each frame, showcasing the knocked-down pins and the
+updated score on below (Just how real bowling alleys do it!). This code has also
+incorporated the sf::Music libs. Make sure to turn up the volume to get the full
+experience!
+
+Bowling is calculated in the following way: (This is why the code was alot more challenging than expeceted):
+
+Players have 2 chances to knock down 10 pins. Every 2 chances is called a frame. The score of 1 frame is the sum
+of the 2 throws. EXCEPT: when a player knocks down all 10 pins on the first throw or all 10 after the second throw. In
+the case that a player knocks down 10 pins in the first throw (a strike), the score of that frame is the sum of 10 plus the following 2
+throws. Meaning that if a player throws a strike followed by 7 pins then 2, that 1 frame score (The one with the strike)
+is 19 points. The max score per frame is 30 for that reason (3 strikes back-to-back-to-back). If a player knocks down 10 pins on the second chance(a spare), that frame's
+score is the sum of 10 plus the next throw.
+
+
+After 9 frames have been bowled, the final frame allows players to score a maximum of 30 points. Each player is given 2 chances in the 
+final frame to bowl. If they knock down 10 pins within those 2 chances, they will be able to bowl a 3rd time in the final frame. This frame acts independently of
+all other frames.
+
+The final score is simply the sum of each frame's total scores.
+
+
+***PROGRAM DOCUMENTATION:
+
+Firstly, build the file using the included make file. All DLLs have been included and have been tested on lab machines with no issues.
+Secondly, run the BowlingCalculator.exe file. A window should appear. If errors are thrown in the terminal, ensure that the DLLs are present and the assets folder is as well. 
+Both are required for the game to run.
+
+(I hope the music and sound effects bring back memories. :) 
+
+Third, in the Main Menu Screen, use the up, down, and enter keys to select and modify the data in the menu.
+    - Start Game: Starts the game
+    - Number of players: Modifies the number of players that will be in the game (Min:1 Max:4)
+    - Crazy Mode: Plays sound effects upon strikes or spares.
+
+After the game starts, enter the number of pins knocked down per throw. Press enter to confirm the selection.
+If you attempt to violate the rules of the game (knocking down more than 10 pins per frame or throw), the calculator will not let you enter
+that selection, and the text box will turn red. Only numbers will be allowed to be entered into the text box.
+
+After the game's completion, you will be brought to a final screen showcasing who won or if there was a tie.
+You'll be able to review the frame scores in the game.txt file.
+
+That's the game!
+
+***CLASS DESCRIPTION:
+
+Frame Class:
+Holds data for each throw and each frame's total score. These can be modified using the included methods. This greatly made the code easier,
+as I only had to track the player number and frame number rather than juggling multiple arrays/vectors with varying data types.
+Along with that, drawing and displaying each frame box is done by this class by passing a reference to the render window object.
+
+
+Final Frame Class:
+This class extends the original frame class but overrides functions such as calcframescore to take into account the 3rd throw. Also overrides display
+to allow for the extra box for the 3rd throw.
+
+Both classes encapsulate their total frame score, and each holds the number of pins knocked down per throw as a part of their _throwXPins variables. Along
+with that, they each have methods dedicated to displaying them, making iteration and displaying a breeze just by multiplying the iteration count with their widths.
+
+
+***LIST DATA STRUCTURE:
+
+The data structure that I chose to use was a vector. In my case, a vector<vector<Frame*>>. This was done to leverage runtime polymorphism to display and edit the frames
+altogether in a much quicker and easier way. An array could've also been chosen, and it would've been faster. I had the idea of making a mode that would increase the game length if
+players were tied. In PBA tournaments this is called a roll off. Overall, I decided to stick to the regular non-pro style of bowling and just add sound effects instead. In that
+scenario, a vector made more sense, but with the current state of the calculator, an array would likely work better.
+
+***FILE I/O:
+
+File I/O was incorporated to print out final scores at the end. File I/O isn't necessary for my program, a high score mechanic could've been added to use file In
+displaying the high score on the main menu. This was in the early stages of planning but was scrapped.
+
+***REFLECTIONS:
+
+Overall, I am actually quite happy with the development of this project compared to other ones I've done in the past. Firstly, starting with the good. I learned from assignment A4 that I
+should have each object draw itself. I took that idea and extended it to the frame class where every element in a frame was based on inputted x, y coordinates that corresponded to the top-left
+spot of each frame. I could then move elements around the point, making for super easy displaying and moving of each frame element.
+
+I encountered several problems such as figuring out the best way to handle the game and counting positions. This gets to the ugly side of development. Personally, I think the approach I took was okay at best.
+There are likely much better ways to implement things that I did, instead of having 100+ line segments inside the while section of the event detector for SFML. I think that I should've made a class called
+game implementer functions. These would handle the current frame number, current player, and all the special strike and spare calculations. It would've slimmed down the main function by a bunch.
+Overall, I should better abstract out helper functions to avoid cluttering the main function; that is the biggest thing that I would modify if I were to do the assignment again.
+
+
+
+~~~~~~~~~~~~~~~ I Hope you like the project ~~~~~~~~~~~~~~~
+-Christian Brennan
+
+Project Started On:  11/22
+Project Finished On: 12/06
